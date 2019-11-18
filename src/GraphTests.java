@@ -13,14 +13,21 @@ public class GraphTests {
         Graph g = TestGraph.MakeSmallGraph();
 
         Vertex source = g.getvertex("A");
-
         Vertex end = g.getvertex("F");
+
+
+        Graph h = TestGraph.MakeBigGraph();
+
+        Vertex endBigGraph = h.getvertex("6");
+        Vertex sourceBigGraph = h.getvertex("10");
 
         Pair<Integer, Map<Vertex, Vertex>> resultsD = g.ShortestDistance(source, end);
         Pair<Integer, Map<Vertex, Vertex>> resultsT = g.ShortestTime(source, end);
+        Pair<Integer, Map<Vertex, Vertex>> resultsDBigGraph = h.ShortestDistance(sourceBigGraph,endBigGraph);
 
         Vertex currentD = end;
         Vertex currentT = end;
+        Vertex currentDBigGraph = endBigGraph;
 
         ArrayList<Vertex> PathD = new ArrayList<>();
         PathD.add(end);
@@ -28,7 +35,12 @@ public class GraphTests {
         ArrayList<Vertex> PathT = new ArrayList<>();
         PathT.add(end);
 
-        System.out.println("This is the shortest path for distance: ");
+        ArrayList<Vertex> PathDBigGraph = new ArrayList<>();
+        PathDBigGraph.add(endBigGraph);
+
+
+
+        System.out.println("This is the shortest path measured in distance: ");
         while ((currentD != source) && (resultsD.getValue().get(currentD) != null)) {
 
             currentD = resultsD.getValue().get(currentD);
@@ -46,7 +58,9 @@ public class GraphTests {
         }
         System.out.println("");
         System.out.println("");
-        System.out.println("This is the shortest path for time: ");
+        System.out.println("This is the shortest path measured in time: ");
+
+
 
         while ((currentT != source) && (resultsT.getValue().get(currentT) != null)) {
 
@@ -61,6 +75,28 @@ public class GraphTests {
                 if (vT != end)
                     System.out.print(" -> ");
 
+            }
+
+        }
+
+
+        System.out.println("");
+        System.out.println("");
+        System.out.println("This is the shortest path for the big graph measured in distance: ");
+
+        while((currentDBigGraph != sourceBigGraph) && (resultsDBigGraph.getValue().get(currentDBigGraph) != null)){
+
+            currentDBigGraph = resultsDBigGraph.getValue().get(currentDBigGraph);
+            PathDBigGraph.add(0, currentDBigGraph);
+
+        }
+
+        for (Vertex vBig : PathDBigGraph) {
+            System.out.print(vBig.Name);
+
+            {
+            if (vBig != endBigGraph)
+                System.out.print(" -> ");
             }
 
         }
@@ -91,4 +127,46 @@ public class GraphTests {
         return mygraph;
 
     }
+    public Graph MakeBigGraph() {
+
+        Graph bigGraph = new Graph();
+
+        final Vertex v1 = bigGraph.addvertex("1");
+        final Vertex v2 = bigGraph.addvertex("2");
+        final Vertex v3 = bigGraph.addvertex("3");
+        final Vertex v4 = bigGraph.addvertex("4");
+        final Vertex v5 = bigGraph.addvertex("5");
+        final Vertex v6 = bigGraph.addvertex("6");
+        final Vertex v7 = bigGraph.addvertex("7");
+        final Vertex v8 = bigGraph.addvertex("8");
+        final Vertex v9 = bigGraph.addvertex("9");
+        final Vertex v10 = bigGraph.addvertex("10");
+
+        bigGraph.newedge(v1,v5,20,0);
+        bigGraph.newedge(v1,v7,15,0);
+        bigGraph.newedge(v1,v6,5,0);
+        bigGraph.newedge(v1,v2,10,0);
+        bigGraph.newedge(v1,v4,20,0);
+        bigGraph.newedge(v2,v3,5,0);
+        bigGraph.newedge(v2,v4,10,0);
+        bigGraph.newedge(v3,v4,5,0);
+        bigGraph.newedge(v3,v2,15,0);
+        bigGraph.newedge(v4,v5,10,0);
+        bigGraph.newedge(v5,v6,5,0);
+        bigGraph.newedge(v7,v6,10,0);
+        bigGraph.newedge(v8,v7,5,0);
+        bigGraph.newedge(v8,v1,5,0);
+        bigGraph.newedge(v8,v2,20,0);
+        bigGraph.newedge(v9,v8,20,0);
+        bigGraph.newedge(v9,v2,15,0);
+        bigGraph.newedge(v9,v10,10,0);
+        bigGraph.newedge(v10,v2,5,0);
+        bigGraph.newedge(v10,v3,15, 0);
+
+
+        return bigGraph;
+
+    }
+
+
 }
