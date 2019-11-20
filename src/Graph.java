@@ -12,9 +12,9 @@ public class Graph {
         return newvertex;
     }
 
-    public void addvertex(Vertex v) {
+public void addvertex(Vertex v) {
 
-        Vertices.add(v);
+    Vertices.add(v);
     }
 
     public Vertex getvertex(String s) {
@@ -33,6 +33,7 @@ public class Graph {
 
     //Source er start, end er slut
     public Pair<Integer, Map<Vertex, Vertex>> ShortestDistance(Vertex source, Vertex end) {
+
         Map<Vertex, Integer> T = new HashMap<>();
         Map<Vertex, Vertex> PredecessorMap = new HashMap<>();
         Map<Vertex, Integer> DistanceMap = new HashMap<>();
@@ -40,10 +41,10 @@ public class Graph {
         PredecessorMap.put(source, null);
 
 
-        // initialize array
+        // initialize array O(n)
         for (Vertex v : Vertices) {
 
-//log v (map) tid hvis vi brugte tree map
+        //log v (map) tid hvis vi brugte tree map
             DistanceMap.put(v, 1000);
             PredecessorMap.put(v, null);
             T.put(v, 1000);
@@ -52,6 +53,7 @@ public class Graph {
         DistanceMap.put(source, 0);     // Edges
         T.put(source, 0);               // Verticies
 
+        // O(n^2)
         for (int i = 0; i < Vertices.size(); i++) {
 
 
@@ -61,20 +63,25 @@ public class Graph {
             for (int j = 0; j < current.getOutEdges().size(); j++) {
 
 
-                //Hvis current er større end current + den nye edge.
+                //Hvis current vertex + current outedge distance er mindre end næste vertex værdi
                 if (DistanceMap.get(current.getOutEdges().get(j).getTovertex()) > DistanceMap.get(current) + current.getOutEdges().get(j).distance) {
 
+                    // Sæt vores næste vertex til at være lig med current vertex + current OutEdge i DistanceMap
                     DistanceMap.put(current.getOutEdges().get(j).getTovertex(), DistanceMap.get(current) + current.getOutEdges().get(j).distance);
+
+                    // Sæt vores næste vertex til at være lig med current vertex + current OutEdge i T
                     T.put(current.getOutEdges().get(j).getTovertex(), DistanceMap.get(current) + current.getOutEdges().get(j).distance);
+
+                    // Opdater vores current til at være lig med vores "tidligere" næste vertex værdi
                     PredecessorMap.put(current.getOutEdges().get(j).getTovertex(), current);
 
                 }
 
             }
+
             //Når vi fjerner den behøves vi ikke at se om den er håndteret
             T.remove(current);
         }
-
 
         //Key = current vertex, Value = predecessor vertex
         return (new Pair<Integer, Map<Vertex, Vertex>>(DistanceMap.get(end), PredecessorMap));
@@ -89,27 +96,28 @@ public class Graph {
         PredecessorMaptime.put(source, null);
 
 
-        // initialize array
+        // initialize array O(n)
         for (Vertex v : Vertices) {
 
-//log v (map) tid hvis vi brugte tree map
+            //log v (map) tid hvis vi brugte tree map
             TimeMap.put(v, 1000);
             PredecessorMaptime.put(v, null);
             T.put(v, 1000);
         }
 
-        TimeMap.put(source, 0);     // Edges
+        TimeMap.put(source, 0);         // Edges
         T.put(source, 0);               // Verticies
 
-        for (int i = 0; i < Vertices.size(); i++) {
 
+        // O(n^2)
+        for (int i = 0; i < Vertices.size(); i++) {
 
             Vertex currentT = getmin(T);
 
             for (int j = 0; j < currentT.getOutEdges().size(); j++) {
 
 
-                //Hvis current er større end current + den nye edge.
+                //Hvis current vertex + current outedge distance er mindre end næste vertex værdi
                 if (TimeMap.get(currentT.getOutEdges().get(j).getTovertex()) > TimeMap.get(currentT) + currentT.getOutEdges().get(j).time) {
 
                     TimeMap.put(currentT.getOutEdges().get(j).getTovertex(), TimeMap.get(currentT) + currentT.getOutEdges().get(j).time);
