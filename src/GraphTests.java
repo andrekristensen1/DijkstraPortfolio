@@ -7,48 +7,46 @@ import java.util.Map;
 public class GraphTests {
 
     public static void main(String[] args) {
-        // Create graph
-        GraphTests TestGraph = new GraphTests();
 
-        Graph g = TestGraph.MakeSmallGraph();
+        GraphTests TestGraph = new GraphTests();                                                                        //Laver et objekt af klassen GraphTests
 
-        Vertex source = g.getvertex("A");
-        Vertex end = g.getvertex("F");
+        Graph g = TestGraph.MakeSmallGraph();                                                                           //Laver en graf ud fra vores MakeSmallGraph metode med navnet g
+        Vertex source = g.getvertex("A");                                                                            //Giver g en source vertex
+        Vertex end = g.getvertex("F");                                                                               //Giver g en end vertex
 
 
-        Graph h = TestGraph.MakeBigGraph();
+        Graph h = TestGraph.MakeBigGraph();                                                                             //Laver en graf ud fra vores MakeBigGraph metode med navnet h
+        Vertex endBigGraph = h.getvertex("6");                                                                       //giver h en source vertex
+        Vertex sourceBigGraph = h.getvertex("10");                                                                   //giver h en end vertex
 
-        Vertex endBigGraph = h.getvertex("6");
-        Vertex sourceBigGraph = h.getvertex("10");
+        Pair<Integer, Map<Vertex, Vertex>> resultsD = g.ShortestDistance(source, end);                                  //Laver et pair kaldet resultsD som er lig med shortestDistance i g
+        Pair<Integer, Map<Vertex, Vertex>> resultsT = g.ShortestTime(source, end);                                      //Laver et pair kaldet resultsT som er lig med shortestTime i g
+        Pair<Integer, Map<Vertex, Vertex>> resultsDBigGraph = h.ShortestDistance(sourceBigGraph,endBigGraph);           //Laver et pair kaldet resultsDBigGraph som er lig med  shortestDistance i h
 
-        Pair<Integer, Map<Vertex, Vertex>> resultsD = g.ShortestDistance(source, end);
-        Pair<Integer, Map<Vertex, Vertex>> resultsT = g.ShortestTime(source, end);
-        Pair<Integer, Map<Vertex, Vertex>> resultsDBigGraph = h.ShortestDistance(sourceBigGraph,endBigGraph);
+        Vertex currentD = end;                                                                                          //Laver en vertex som skal være slutningen på vores shortestpath for distancen
+        Vertex currentT = end;                                                                                          //Laver en vertex som skal være slutningen på vores shortestpath for tid
+        Vertex currentDBigGraph = endBigGraph;                                                                          //Laver en vertex som skal være slutningen på vores shortestpath for bigGraph med distance
 
-        Vertex currentD = end;
-        Vertex currentT = end;
-        Vertex currentDBigGraph = endBigGraph;
+        ArrayList<Vertex> PathD = new ArrayList<>();                                                                    //Laver en arraylist som skal indeholde vores shortestpath for distance
+        PathD.add(end);                                                                                                 //Tilføjer den valgte slut vertex
 
-        ArrayList<Vertex> PathD = new ArrayList<>();
-        PathD.add(end);
+        ArrayList<Vertex> PathT = new ArrayList<>();                                                                    //Laver en arraylist som skal indeholde vores shortestpath for tid
+        PathT.add(end);                                                                                                 //Tilføjer den valgte slut vertex
 
-        ArrayList<Vertex> PathT = new ArrayList<>();
-        PathT.add(end);
-
-        ArrayList<Vertex> PathDBigGraph = new ArrayList<>();
-        PathDBigGraph.add(endBigGraph);
+        ArrayList<Vertex> PathDBigGraph = new ArrayList<>();                                                            //Laver en arraylist som skal indeholde vores shortestpath for distance i h
+        PathDBigGraph.add(endBigGraph);                                                                                 //Tilføjer den valgte slut vertex
 
 
 
         System.out.println("This is the shortest path measured in distance: ");
-        while ((currentD != source) && (resultsD.getValue().get(currentD) != null)) {
+        while ((currentD != source) && (resultsD.getValue().get(currentD) != null)) {                                   //Så længe vores currentD ikke er lig med source vertex og at vores shortestpath ikke er nul.
 
-            currentD = resultsD.getValue().get(currentD);
+            currentD = resultsD.getValue().get(currentD);                                                               //Sætter vores currentD til at være lig med dem nuværende værdi fra fra vores shortestpath
 
-            PathD.add(0, currentD);
+            PathD.add(0, currentD);                                                                              // Tilføjer denne værdi til vores arraylist
 
         }
-        for (Vertex v : PathD) {
+        for (Vertex v : PathD) {                                                                                        //printer vores shortest path i konsollen
             System.out.print(v.Name);
 
             {
@@ -103,6 +101,12 @@ public class GraphTests {
 
     }
 
+    /**
+     * En metode der kreerer en graf ud fra givne edges og vertices
+     *
+     * @return smallGraph
+     */
+
     public Graph MakeSmallGraph() {
         Graph mygraph = new Graph();
         final Vertex A = mygraph.addvertex("A");
@@ -127,6 +131,12 @@ public class GraphTests {
         return mygraph;
 
     }
+
+    /**
+     * En metode der kreerer en graf ud fra givne edges og vertices
+     *
+     * @return bigGraph
+     */
     public Graph MakeBigGraph() {
 
         Graph bigGraph = new Graph();
